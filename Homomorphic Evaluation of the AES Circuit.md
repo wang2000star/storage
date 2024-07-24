@@ -1,5 +1,9 @@
 # "Homomorphic Evaluation of the AES Circuit"学习笔记
 
+## 参考链接
+
+[Homomorphic Evaluation of the AES Circuit：解读 - PamShao - 博客园 (cnblogs.com)](https://www.cnblogs.com/pam-sh/p/16176394.html "博客园")
+
 ## 1、数学基础
 
 模$q$剩余类整数环限定在$(-\lfloor q/2\rfloor,\lfloor q/2\rfloor]$，用$[z]_q$表示模$q$的整数规约到这个区间。
