@@ -40,15 +40,57 @@ $......$
 
 （3）分圆多项式在有理数域$\mathbb{Q}$上不可约。
 
+（4）分圆多项式一定是整系数多项式。
+
 分圆多项式的详细性质参考[分圆多项式和分圆域](https://wuli.wiki/online/Cycltm.html "小时百科")
 
-由分圆多项式定义多项式环，$\mathbb{A}=\mathbb{Z}[x]/\phi_m(x)$。
+由分圆多项式定义多项式环，$\mathbb{A}=\mathbb{Z}[x]/\Phi_m(x)$。
 
-$\mathbb{A}$是第$m$个分圆数域$\mathbb{Q}(\zeta_m)$的整数环。
+$\mathbb{A}$是第$m$个分圆数域$\mathbb{Q}(\zeta_m)$的整数环，$\zeta_m$是$m$次本原单位根。
 
-将$\mathbb{A}_q$定义为次数不超过$\phi(m)-1$的模$q$约化的整数多项式的集合。
+这里$\mathbb{Q}(\zeta_m)=\sum_{i=0}^{\varphi(m)-1}a_i\zeta_m^i$，$a_i\in \mathbb{Q}$，是有理数域的单扩张。即$\mathbb{Q}(\zeta_m)$也是一个域且是代数数域即有理数的扩域。
 
-中间暂时省略跳过，下面来看AES的同态评估：
+将$\mathbb{A}_q$定义为次数不超过$\varphi(m)-1$的模$q$约化的整数多项式的集合。
+
+$\mathbb{A}_q$是模$q$整系数多项式环，是否构成有限域？不一定，除非$q$是素数。
+
+$a\in\mathbb{A}_q$，则可以将看做$a$看做多项式，即$a(X)=\sum_{i=0}^{\varphi(m)-1}a_iX^i$。
+
+因此$a=\langle a_0,a_1....,a_{\varphi(m)-1}\rangle\in (\mathbb{Z}/{q\mathbb{Z})^{\varphi(m)}}$
+
+上面这种称为系数表示法，还有计算表示法：令$b_i=a(\zeta_m^i)=\sum_{j=0}^{\varphi(m)-1}a_j(\zeta_m^i)^j\in\mathbb{Q}(\zeta_m)$
+
+则$b=\langle b_0,b_1,...,b_{\varphi(m)-1}\rangle=\langle a_0,a_1,...,a_{\varphi(m)-1}\rangle V_{\varphi(m)\times \varphi(m)}$
+
+$V=\begin{bmatrix}1&1&1&...&1\\1&\zeta_m&\zeta_m^2&...&\zeta_m^{\varphi(m)-1}\\...\\1&\zeta_m^{\varphi(m)-1}&(\zeta_m^2)^{\varphi(m)-1}&...&(\zeta_m^{\varphi(m)-1})^{\varphi(m)-1}\end{bmatrix}$
+
+显然$V$是一个特殊的范德矩阵，为什么说特殊？因为第二行可以由同一个元素的幂次来表示，这也是FFT里面常用的。
+
+如果已知$a,V$，可以利用FFT来计算$b$。
+
+等比数列求和公式：
+
+$x+qx+q^2x+...+q^{n-1}x=(x-q^nx)/(1-q)$
+
+令$x=1,q=b/a$，则$(1-(b/a)^n)/(1-b/a)=1+b/a+(b/a)^2+...+(b/a)^{n-1}$
+
+所以
+
+$$
+(a^n-b^n)/(a-b)=a^{n-1}+a^{n-2}b+a^{n-3}b^2+...+b^{n-1}
+$$
+
+$X-\zeta_m^i|X^j-({\zeta_m^i})^j$
+
+所以$X-\zeta_m^i|a(X)-a(\zeta_m^i)$，即$X-\zeta_m^i|a(X)-b_i$。
+
+所以有$a(X)\equiv b_i(mod\;X-\zeta_m^i)$，这正好是多项式形式的中国剩余定理CRT。
+
+这里$b_i$是否是整数？暂且搁置。
+
+
+
+中间暂时省略跳过，下面来看AES的同态评估：。
 
 ## AES-128算法回顾
 
@@ -70,16 +112,12 @@ $8|d$，$\phi(m)/d$个密文槽，每个密文可以存储至少$F_2^8$上的元
 
 富比尼自同构
 
-等比数列求和公式：
+BGV方案
 
-$x+qx+q^2x+...+q^{n-1}x=(x-q^nx)/(1-q)$
+5个自同构：加法、乘法、自同构、密钥交换、模交换。
 
-令$x=1,q=b/a$，则$(1-(b/a)^n)/(1-b/a)=1+b/a+(b/a)^2+...+(b/a)^{n-1}$
+这里的乘法指的是张量积。
 
-所以  
+伽罗瓦理论参考：
 
-$$
-a^n-b^n)/(a-b)=a^{n-1}+a^{n-2}b+a^{n-3}b^2+...+b^{n-1}
-$$
-
-$x-\zeta^i|X^i-({\zeta^i})^i$
+[抽象代数课程笔记 III —— 域论、伽罗瓦理论 - qAlex_Weiq - 博客园 (cnblogs.com)](https://www.cnblogs.com/alex-wei/p/18195700/Abstract_Algebra_Field_Theory_and_Galois_Theory "博客园")
